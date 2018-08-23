@@ -10,6 +10,8 @@ import UIKit
 
 class tagViewController: UIViewController {
     
+
+    
     
     @IBOutlet weak var tag1: UILabel!
     
@@ -23,7 +25,62 @@ class tagViewController: UIViewController {
     var  image2:UIImage!
     
    
-
+    @IBOutlet weak var tagButton1: UIButton!
+    
+    @IBOutlet weak var tagButton2: UIButton!
+    
+    @IBOutlet weak var tagButton3: UIButton!
+    
+    
+    @IBAction func tagButton1(_ sender: Any) {
+        
+        
+        if self.tagButton1.backgroundColor == UIColor.red{
+            
+            tagButton1.backgroundColor = UIColor.brown
+            
+        }
+        else{
+            tagButton1.backgroundColor = UIColor.red
+        }
+        
+        
+        
+        
+    }
+    
+    @IBAction func tagButton2(_ sender: Any) {
+        
+        if self.tagButton2.backgroundColor == UIColor.red{
+            
+            tagButton2.backgroundColor = UIColor.brown
+            
+        }
+        else{
+            tagButton2.backgroundColor = UIColor.red
+        }
+        
+    }
+    
+    
+    @IBAction func tagButton3(_ sender: Any) {
+        
+        if self.tagButton3.backgroundColor == UIColor.red{
+            
+            tagButton3.backgroundColor = UIColor.brown
+            
+        }
+        else{
+            tagButton3.backgroundColor = UIColor.red
+        }
+        
+        
+    }
+    
+    
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -31,10 +88,20 @@ class tagViewController: UIViewController {
         sampleImage.contentMode = .scaleAspectFit
         sampleImage.image = image2
         
-        print ("ggggggggggggggggggggggggggggggg")
-//        self.sampleImage = UserDefaults.standard.object(forKey: "image") as! UIImageView
-
-        // Do any additional setup after loading the view.
+        self.tagButton1.layer.masksToBounds = true
+        self.tagButton1.layer.cornerRadius = 15.0
+        self.tagButton1.backgroundColor = UIColor.red
+        
+        self.tagButton2.layer.masksToBounds = true
+        self.tagButton2.layer.cornerRadius = 15.0
+        self.tagButton2.backgroundColor = UIColor.red
+        
+        self.tagButton3.layer.masksToBounds = true
+        self.tagButton3.layer.cornerRadius = 15.0
+        self.tagButton3.backgroundColor = UIColor.red
+       
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -44,6 +111,29 @@ class tagViewController: UIViewController {
     
     
     @IBAction func goSubmitButton(_ sender: Any) {
+        
+        let hash = "#"
+        if self.tagButton1.backgroundColor == UIColor.red{
+             UserDefaults.standard.set(hash+"woman", forKey: "tag1")
+            }
+        else{
+            UserDefaults.standard.set("", forKey: "tag1")
+        }
+        
+        if self.tagButton2.backgroundColor == UIColor.red{
+            UserDefaults.standard.set(hash+"cute", forKey: "tag2")
+        }
+        else{
+            UserDefaults.standard.set("", forKey: "tag2")
+        }
+        
+        
+        if self.tagButton3.backgroundColor == UIColor.red{
+            UserDefaults.standard.set(hash+"beautiful", forKey: "tag3")
+        }
+        else{
+            UserDefaults.standard.set("", forKey: "tag3")
+        }
         
         
         performSegue(withIdentifier: "goSubmit", sender: nil)
@@ -59,24 +149,44 @@ class tagViewController: UIViewController {
         self.tag2.text = "cute"
         self.tag3.text = "beautiful"
         
-        let hash = "#"
-        
-        UserDefaults.standard.set(hash+"woman", forKey: "tag1")
-         UserDefaults.standard.set(hash+"cute", forKey: "tag2")
-         UserDefaults.standard.set(hash+"beautiful", forKey: "tag3")
-        
+    
         
     }
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
+        if segue.identifier == "goSubmit"{
+        
         let nextVC:SubmitViewController = segue.destination as! SubmitViewController
         
         nextVC.image = self.image2
+            
+        }
+        
+        if segue.identifier == "goEdit"{
+            
+            let nextVC:editViewController = segue.destination as! editViewController
+            
+            nextVC.image = self.image2
+            
+            
+        }
         
         
     }
+    
+    
+    
+    @IBAction func goEditButton(_ sender: Any) {
+        
+        performSegue(withIdentifier: "goEdit", sender: nil)
+        
+        
+        
+        
+    }
+    
     
     
 

@@ -86,17 +86,10 @@ class SubmitViewController: UIViewController {
         
         self.present(twitter!,animated:true,completion:nil)
           
-            self.present(facebook!,animated:true,completion:nil)
+        self.present(facebook!,animated:true,completion:nil)
         
         
-       
-        
-        
-        
-        
-        
-        
-    }
+}
     
 
     /*
