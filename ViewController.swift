@@ -10,6 +10,7 @@ import UIKit
 import Photos
 import Foundation
 
+
 class ViewController: UIViewController,StreamDelegate {
 
 
@@ -60,29 +61,7 @@ class ViewController: UIViewController,StreamDelegate {
         
         
         
-        let rect:CGRect = CGRect(x:0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
         
-        
-        UIGraphicsBeginImageContextWithOptions(rect.size, false, 0.0)
-        
-        
-        let context = UIGraphicsGetCurrentContext()
-        
-        
-        let aa:CGAffineTransform = CGAffineTransform(
-            translationX:0,y:0)
-        
-        context!.concatenate(aa)
-        
-        
-        view.layer.render(in: UIGraphicsGetCurrentContext()!)
-        
-        
-        //コンテキストから画像を取得する。
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        
-        //コンテキストを破棄する。
-        UIGraphicsEndImageContext()
         
         
         
@@ -102,36 +81,36 @@ class ViewController: UIViewController,StreamDelegate {
 //
 //
 //
-//        var request = URLRequest(url: URL(string: "http://52.198.189.199:80/get_tags")!)
-//        request.httpMethod = "POST"
-////        request.httpBody = postString.data(using: String.Encoding.utf8)
-////        request.setValue("plan/text", forHTTPHeaderField: "Content-Type")
-//
-//
-//
-//        request.httpBody = picture
-//        request.setValue("multipart/form-data", forHTTPHeaderField: "Content-Type")
-//
-//
-//
-//        let task = URLSession.shared.dataTask(with: request, completionHandler: {
-//            (data, response, error) in
-//
-//            if error != nil {
-//                print(error)
-//                return
-//            }
-//
-//            if data != nil{
-//
-//
-//                print (String.init(data: data!, encoding: String.Encoding.utf8))
-//            }
-//
-//
-//
-//        })
-//        task.resume()
+        
+        let postString = "aaaaaaaaaaaa"
+        var request = URLRequest(url: URL(string: "http://52.198.189.199:80/get_tags")!)
+        request.httpMethod = "POST"
+        request.httpBody = postString.data(using: String.Encoding.utf8)
+        request.setValue("plan/text", forHTTPHeaderField: "Content-Type")
+
+
+        request.setValue("multipart/form-data", forHTTPHeaderField: "Content-Type")
+
+
+
+        let task = URLSession.shared.dataTask(with: request, completionHandler: {
+            (data, response, error) in
+
+            if error != nil {
+                print(error)
+                return
+            }
+
+            if data != nil{
+
+
+                print (String.init(data: data!, encoding: String.Encoding.utf8))
+            }
+
+
+
+        })
+        task.resume()
 
 
 

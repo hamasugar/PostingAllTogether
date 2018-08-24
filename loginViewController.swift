@@ -6,10 +6,19 @@
 //  Copyright © 2018年 hamasugartanaka. All rights reserved.
 //
 
+
+
+
 import UIKit
 
 class loginViewController: UIViewController {
     
+    
+    let image1 = UIImage(named: "insta2")
+    let image2 = UIImage(named: "fassion4")
+    let image3 = UIImage(named: "music")
+    let image4 = UIImage(named: "photo")
+    let image5 = UIImage(named: "insta")
     
     
     @IBOutlet weak var password: UITextField!
@@ -90,6 +99,19 @@ class loginViewController: UIViewController {
         
         
         
+        print (image1?.size.width)
+        print (image2?.size.width)
+        print (image3?.size.width)
+        print (image4?.size.width)
+        print (image5?.size.width)
+       
+        
+        
+        
+        
+        
+        
+        
         if (password.text?.count)!<=7{
             
             let alertcon = UIAlertController(title: "パスワードが違います", message:"パスワードが違います", preferredStyle: .alert)
@@ -100,7 +122,7 @@ class loginViewController: UIViewController {
             
         }
         else{
-            
+            sleep(2)
            performSegue(withIdentifier:"goHome", sender: nil)
         }
         
@@ -118,6 +140,9 @@ class loginViewController: UIViewController {
     
     
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
     
     
     

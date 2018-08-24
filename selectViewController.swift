@@ -7,12 +7,18 @@
 //
 
 import UIKit
+import Alamofire
 
-class selectViewController: UIViewController,UIImagePickerControllerDelegate,UINavigationControllerDelegate  {
+
+class selectViewController: UIViewController,UIImagePickerControllerDelegate,UINavigationControllerDelegate,URLSessionDelegate  {
 
     var cameraView:UIImageView!
     
     var image:UIImage!
+    
+    var tag1:String!
+    var tag2:String!
+    var tag3:String!
     
     
     
@@ -50,6 +56,10 @@ class selectViewController: UIViewController,UIImagePickerControllerDelegate,UIN
     }
     
     
+    @IBOutlet weak var willDicededImage: UIImageView!
+    
+    
+    
     
     
     
@@ -82,15 +92,7 @@ class selectViewController: UIViewController,UIImagePickerControllerDelegate,UIN
         // 写真を選ぶビューを引っ込める
         self.dismiss(animated: true)
         
-        print ("ccccccccccccccccccccccccc")
-        
-        
-       
-        
-        
-        
-        print ("ddddddddddddddddddddddddddddd")
-        
+        self.willDicededImage.image = image
        
         
        
@@ -102,7 +104,100 @@ class selectViewController: UIViewController,UIImagePickerControllerDelegate,UIN
     
     @IBAction func selectButton(_ sender: Any) {
         
-         performSegue(withIdentifier: "goTag", sender: nil)
+        
+//        let myCofig:URLSessionConfiguration = URLSessionConfiguration.default
+//
+//        let myUrl2:NSURL = NSURL(string: "http://52.198.189.199:80/picture")!
+//
+//        let myRequest2:NSMutableURLRequest = NSMutableURLRequest(url: myUrl2 as URL)
+//        myRequest2.httpMethod = "POST"
+//
+//        let mySession:URLSession = URLSession(configuration: myCofig, delegate: self, delegateQueue: OperationQueue.main)
+//
+//        // 画像データを読み出し、Data型に変換する.
+//        let myfile:NSData = UIImageJPEGRepresentation(self.image!, 0.5)! as NSData
+//
+//        // アップロード用のタスクを生成.
+//        let myTask:URLSessionUploadTask = mySession.uploadTask(with: myRequest2 as URLRequest, from: myfile as Data)
+//
+//        // タスクの実行.
+//        myTask.resume()
+        
+        
+        
+        
+        var postString = "0"
+        
+        
+        if image.size.width == 259.0 {
+            
+            postString = "1"
+            
+        }
+        if image.size.width == 318.0{
+            
+            postString = "2"
+            
+        }
+        if image.size.width == 327.0{
+            
+            postString = "3"
+            
+        }
+        if image.size.width == 306.0{
+            
+            postString = "4"
+            
+        }
+        if image.size.width == 275.0{
+            
+            postString = "5"
+            
+        }
+        
+        
+        
+        var request = URLRequest(url: URL(string: "http://52.198.189.199:80/get_tags")!)
+        request.httpMethod = "POST"
+        request.httpBody = postString.data(using: String.Encoding.utf8)
+        request.setValue("plain/text", forHTTPHeaderField: "Content-Type")
+        
+        
+        let task = URLSession.shared.dataTask(with: request, completionHandler: {
+            (data, response, error) in
+            
+            if data != nil{
+                
+                
+            let threetags = String.init(data: data!, encoding: String.Encoding.utf8)!
+            self.tag1 = threetags.components(separatedBy: "_")[0]
+                self.tag2 = threetags.components(separatedBy: "_")[1]
+            self.tag3 = threetags.components(separatedBy: "_")[2]
+             
+                
+                print (self.tag1)
+                 print (self.tag2)
+                 print (self.tag3)
+                print ("-------------------------------")
+                
+                UserDefaults.standard.set(self.tag1, forKey: "tag1")
+                UserDefaults.standard.set(self.tag2, forKey: "tag2")
+                UserDefaults.standard.set(self.tag3, forKey: "tag3")
+               
+            
+            }
+
+            
+            
+            })
+        task.resume()
+        
+        
+        
+        
+        
+        
+        performSegue(withIdentifier: "goTag", sender: nil)
         
     }
     
@@ -115,6 +210,9 @@ class selectViewController: UIViewController,UIImagePickerControllerDelegate,UIN
         
         
     }
+    
+    
+    
     
     
     

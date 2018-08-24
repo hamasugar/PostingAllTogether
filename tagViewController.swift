@@ -32,6 +32,14 @@ class tagViewController: UIViewController {
     @IBOutlet weak var tagButton3: UIButton!
     
     
+    var tagText1:String!
+    var tagText2:String!
+    var tagText3:String!
+    
+    
+    
+    
+    
     @IBAction func tagButton1(_ sender: Any) {
         
         
@@ -84,7 +92,7 @@ class tagViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print ("fffffffffffffffffffffffffffff")
+       
         sampleImage.contentMode = .scaleAspectFit
         sampleImage.image = image2
         
@@ -99,8 +107,13 @@ class tagViewController: UIViewController {
         self.tagButton3.layer.masksToBounds = true
         self.tagButton3.layer.cornerRadius = 15.0
         self.tagButton3.backgroundColor = UIColor.red
-       
         
+        
+         tagText1 = UserDefaults.standard.object(forKey: "tag1") as! String
+         tagText2 = UserDefaults.standard.object(forKey: "tag2") as! String
+         tagText3 = UserDefaults.standard.object(forKey: "tag3") as! String
+       
+        print (tagText1)
         
     }
 
@@ -112,16 +125,21 @@ class tagViewController: UIViewController {
     
     @IBAction func goSubmitButton(_ sender: Any) {
         
-        let hash = "#"
+        
         if self.tagButton1.backgroundColor == UIColor.red{
-             UserDefaults.standard.set(hash+"woman", forKey: "tag1")
+             UserDefaults.standard.set(tagText1, forKey: "tag1")
+            
+            print (tagText1)
+            print ("qqqqqqqqqqqqqqqqqqqqqqqq")
+            
+            
             }
         else{
             UserDefaults.standard.set("", forKey: "tag1")
         }
         
         if self.tagButton2.backgroundColor == UIColor.red{
-            UserDefaults.standard.set(hash+"cute", forKey: "tag2")
+            UserDefaults.standard.set(tagText2, forKey: "tag2")
         }
         else{
             UserDefaults.standard.set("", forKey: "tag2")
@@ -129,11 +147,12 @@ class tagViewController: UIViewController {
         
         
         if self.tagButton3.backgroundColor == UIColor.red{
-            UserDefaults.standard.set(hash+"beautiful", forKey: "tag3")
+            UserDefaults.standard.set(tagText3, forKey: "tag3")
         }
         else{
             UserDefaults.standard.set("", forKey: "tag3")
         }
+        
         
         
         performSegue(withIdentifier: "goSubmit", sender: nil)
@@ -145,9 +164,9 @@ class tagViewController: UIViewController {
         
         
         
-        self.tag1.text = "woman"
-        self.tag2.text = "cute"
-        self.tag3.text = "beautiful"
+        self.tag1.text = tagText1
+        self.tag2.text = tagText2
+        self.tag3.text = tagText3
         
     
         
@@ -179,6 +198,8 @@ class tagViewController: UIViewController {
     
     
     @IBAction func goEditButton(_ sender: Any) {
+        
+        
         
         performSegue(withIdentifier: "goEdit", sender: nil)
         

@@ -9,10 +9,13 @@
 import UIKit
 import Social
 
-class SubmitViewController: UIViewController {
+class SubmitViewController: UIViewController,UITextViewDelegate {
 
     
     var image:UIImage!
+    var countLabel = UILabel()
+    // 20 60 335 21
+    
     
     
     @IBOutlet weak var textView: UITextView!
@@ -23,13 +26,36 @@ class SubmitViewController: UIViewController {
         super.viewDidLoad()
         
         self.textView.isEditable = true
-        
-        let tag1 = UserDefaults.standard.object(forKey: "tag1")
-        let tag2 = UserDefaults.standard.object(forKey: "tag2")
-        let tag3 = UserDefaults.standard.object(forKey: "tag3")
+        textView.delegate = self
         
         
-        self.textView.text = " \(tag1!) \(tag2!) \(tag3!)"
+        
+         var tag1 = UserDefaults.standard.object(forKey: "tag1") as! String
+         var tag2 = UserDefaults.standard.object(forKey: "tag2") as! String
+         var tag3 = UserDefaults.standard.object(forKey: "tag3") as! String
+        
+        if tag1 != ""{
+            tag1 = "#\(tag1)"
+        }
+        
+        if tag2 != ""{
+            tag2 = "#\(tag2)"
+        }
+        
+        if tag3 != ""{
+            tag3 = "#\(tag3)"
+        }
+        
+        
+        
+        
+        
+        self.textView.text = " \(tag1) \(tag2) \(tag3)"
+        
+        self.countLabel.frame = CGRect(x: 20, y: 60, width: 335, height: 21)
+        
+        self.countLabel.textAlignment = .center
+        self.view.addSubview(countLabel)
 
         // Do any additional setup after loading the view.
     }
@@ -39,12 +65,46 @@ class SubmitViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        
+        
+        countLabel.text = "現在\(self.textView.text.count)文字"
+        print ("kkkkkkkkkkk")
+        return true
+    }
+    
+    
     
     @IBAction func submit(_ sender: Any) {
         
+        let postString = textView.text!
+        var request = URLRequest(url: URL(string: "http://52.198.189.199:80/tweet")!)
+        request.httpMethod = "POST"
+        request.httpBody = postString.data(using: String.Encoding.utf8)
+        request.setValue("plain/text", forHTTPHeaderField: "Content-Type")
         
-        let text = "今日もいい天気"
         
+        let task = URLSession.shared.dataTask(with: request, completionHandler: {
+                    (data, response, error) in
+        
+        
+        
+        })
+                task.resume()
+
+        
+//        LINE の実装を以下でやっています
+//
+//        let pasteBoard = UIPasteboard.general
+//        pasteBoard.image = image
+//
+//        let lineSchemeImage: String = "line://msg/image/%@"
+//        let scheme = String(format: lineSchemeImage, pasteBoard.name as CVarArg)
+//        let messageURL: URL! = URL(string: scheme)
+//
+//        self.openURL(messageURL)
+//
 //        let rect:CGRect = CGRect(x:0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
 //
 //
@@ -75,21 +135,36 @@ class SubmitViewController: UIViewController {
         
         
         facebook?.add(image)
-        facebook?.setInitialText(text)
+        facebook?.setInitialText(self.textView.text!)
         
         
-        let twitter = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
+      self.present(facebook!,animated:true,completion:nil)
         
         
-        twitter?.add(image)
-        twitter?.setInitialText(text)
         
-        self.present(twitter!,animated:true,completion:nil)
-          
-        self.present(facebook!,animated:true,completion:nil)
+        
         
         
 }
+    
+    
+   func openURL(_ url: URL) {
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        } else {
+            // 本来であれば、指定したURLで開けないときの実装を別途行う必要がある
+            print("failed to open..")
+        }
+    }
+    
+    @IBAction func backToHome(_ sender: Any) {
+        
+        performSegue(withIdentifier: "backToHome", sender: nil)
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
     
 
     /*
