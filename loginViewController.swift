@@ -1,41 +1,24 @@
-//
-//  loginViewController.swift
-//  ikkatuPost
-//
-//  Created by user on 2018/08/23.
-//  Copyright © 2018年 hamasugartanaka. All rights reserved.
-//
-
-
-
-
 import UIKit
 
 class loginViewController: UIViewController {
     
-    
-    let image1 = UIImage(named: "insta2")
-    let image2 = UIImage(named: "fassion4")
-    let image3 = UIImage(named: "music")
-    let image4 = UIImage(named: "photo")
-    let image5 = UIImage(named: "insta")
-    
-    
     @IBOutlet weak var password: UITextField!
+    @IBOutlet weak var touroku: UIButton!
+    @IBOutlet weak var login: UIButton!
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        // ボタンに少し丸みをつけている
         touroku.layer.masksToBounds = true
         touroku.layer.cornerRadius = 10.0
         
         login.layer.masksToBounds = true
         login.layer.cornerRadius = 10.0
         
-        
-
-        // Do any additional setup after loading the view.
+    // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
@@ -44,16 +27,11 @@ class loginViewController: UIViewController {
     }
     
     
-    
-    
-    
-    @IBAction func touroku(_ sender: Any) {
-        
-        
-        
+@IBAction func touroku(_ sender: Any) {
+        // ボタンが押されるとボタンを伸縮させる　パスワードに関係なく次の画面へ移る
         UIView.animate(withDuration: 0.1,
                        
-                       // アニメーション中の処理.
+          // アニメーション中の処理.
             animations: { () -> Void in
                 
                 // 拡大用アフィン行列を作成する.
@@ -62,14 +40,11 @@ class loginViewController: UIViewController {
                 // 縮小用アフィン行列を作成する.
                 self.touroku.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
                 
-                
-                
-        })
+            })
         
         performSegue(withIdentifier:"goHome", sender: nil)
         
-        
-    }
+}
     
     
     @IBAction func tourokuDown(_ sender: Any) {
@@ -84,34 +59,12 @@ class loginViewController: UIViewController {
                 self.touroku.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
                 
         })
-        
-        
-        
-        
+    
         
     }
     
-    
-    
-    
-    
     @IBAction func login(_ sender: Any) {
-        
-        
-        
-        print (image1?.size.width)
-        print (image2?.size.width)
-        print (image3?.size.width)
-        print (image4?.size.width)
-        print (image5?.size.width)
-       
-        
-        
-        
-        
-        
-        
-        
+        // パスワードが７文字以下だと問答無用でパスワードが違うことにする
         if (password.text?.count)!<=7{
             
             let alertcon = UIAlertController(title: "パスワードが違います", message:"パスワードが違います", preferredStyle: .alert)
@@ -119,44 +72,33 @@ class loginViewController: UIViewController {
             alertcon.addAction(action)
             present(alertcon, animated: true, completion: nil)
             
-            
-        }
+            }
         else{
-            sleep(2)
-           performSegue(withIdentifier:"goHome", sender: nil)
+            // ボタンをぷよぷよさせる
+            UIView.animate(withDuration: 0.1,
+                           
+        // アニメーション中の処理.
+                animations: { () -> Void in
+                    
+                    // 拡大用アフィン行列を作成する.
+            self.login.transform = CGAffineTransform(scaleX: 0.4, y: 0.4)
+                    
+                    // 縮小用アフィン行列を作成する.
+            self.login.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+                    
+                    
+                    
+            })
+            
+            performSegue(withIdentifier:"goHome", sender: nil)
         }
         
-        
-        
-       
-        
+
     }
     
-    @IBOutlet weak var touroku: UIButton!
+    // 画面のどこかが押された時にキーボードが閉じられる
+override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)}
     
     
-    @IBOutlet weak var login: UIButton!
-    
-    
-    
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
-    }
-    
-    
-    
-    
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

@@ -1,11 +1,3 @@
-//
-//  selectViewController.swift
-//  ikkatuPost
-//
-//  Created by user on 2018/08/23.
-//  Copyright © 2018年 hamasugartanaka. All rights reserved.
-//
-
 import UIKit
 import Alamofire
 
@@ -14,15 +6,14 @@ class selectViewController: UIViewController,UIImagePickerControllerDelegate,UIN
 
     var cameraView:UIImageView!
     
+    // cameraViewの上に画像を貼り付ける
     var image:UIImage!
     
+    
+    // 3つのタグを保持する文字列　前画面から値を受け取る
     var tag1:String!
     var tag2:String!
     var tag3:String!
-    
-    
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,65 +29,37 @@ class selectViewController: UIViewController,UIImagePickerControllerDelegate,UIN
     
     @IBAction func camera(_ sender: Any) {
         
-        let pickerController = UIImagePickerController()
-        let sourceType:UIImagePickerControllerSourceType =
-            UIImagePickerControllerSourceType.camera
-        
-        //ソースタイプを指定(cameraの場合はplistでカメラ使用を許可すること)
-        pickerController.sourceType = sourceType
-        pickerController.delegate = self as UIImagePickerControllerDelegate & UINavigationControllerDelegate
-        
-        //カメラを表示
-        present(pickerController, animated: true, completion: nil)
-        
-        
-        
-        
-        
-    }
+    //カメラは反応しない
+        }
     
     
     @IBOutlet weak var willDicededImage: UIImageView!
     
     
-    
-    
-    
-    
-    
-    
-    
-    
     @IBAction func album(_ sender: Any) {
         
-        
+        // 下の四行のコードでアルバム選択画面へ移動する
         let pickerView = UIImagePickerController()
 
         pickerView.sourceType = .photoLibrary
-        // デリゲート
+        
         pickerView.delegate = self
-        // ビューに表示
+    
         self.present(pickerView, animated: true)
-        
-        
-        
         
     }
     
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         // 選択した写真を取得する
-        print ("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         image = info[UIImagePickerControllerOriginalImage] as! UIImage
-        print ("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
+        
         // 写真を選ぶビューを引っ込める
         self.dismiss(animated: true)
-        
+        // 画面に選んだ写真を表示させる
         self.willDicededImage.image = image
        
-        
-       
-    }
+}
     
     
     @IBOutlet weak var selectButton: UIButton!
@@ -105,31 +68,10 @@ class selectViewController: UIViewController,UIImagePickerControllerDelegate,UIN
     @IBAction func selectButton(_ sender: Any) {
         
         
-//        let myCofig:URLSessionConfiguration = URLSessionConfiguration.default
-//
-//        let myUrl2:NSURL = NSURL(string: "http://52.198.189.199:80/picture")!
-//
-//        let myRequest2:NSMutableURLRequest = NSMutableURLRequest(url: myUrl2 as URL)
-//        myRequest2.httpMethod = "POST"
-//
-//        let mySession:URLSession = URLSession(configuration: myCofig, delegate: self, delegateQueue: OperationQueue.main)
-//
-//        // 画像データを読み出し、Data型に変換する.
-//        let myfile:NSData = UIImageJPEGRepresentation(self.image!, 0.5)! as NSData
-//
-//        // アップロード用のタスクを生成.
-//        let myTask:URLSessionUploadTask = mySession.uploadTask(with: myRequest2 as URLRequest, from: myfile as Data)
-//
-//        // タスクの実行.
-//        myTask.resume()
-        
-        
-        
-        
         var postString = "0"
         
-        
-        if image.size.width == 259.0 {
+        // 写真の横幅によって画像を区別して数字をサーバーへ送る
+        if image.size.width == 4288.0 {
             
             postString = "1"
             
@@ -156,7 +98,7 @@ class selectViewController: UIViewController,UIImagePickerControllerDelegate,UIN
         }
         
         
-        
+    // サーバーへ文章を送る定型文 plaintextの指定を忘れない
         var request = URLRequest(url: URL(string: "http://52.198.189.199:80/get_tags")!)
         request.httpMethod = "POST"
         request.httpBody = postString.data(using: String.Encoding.utf8)
@@ -174,17 +116,6 @@ class selectViewController: UIViewController,UIImagePickerControllerDelegate,UIN
                 self.tag2 = threetags.components(separatedBy: "_")[1]
             self.tag3 = threetags.components(separatedBy: "_")[2]
              
-                
-                print (self.tag1)
-                 print (self.tag2)
-                 print (self.tag3)
-                print ("-------------------------------")
-                
-                UserDefaults.standard.set(self.tag1, forKey: "tag1")
-                UserDefaults.standard.set(self.tag2, forKey: "tag2")
-                UserDefaults.standard.set(self.tag3, forKey: "tag3")
-               
-            
             }
 
             
@@ -194,38 +125,24 @@ class selectViewController: UIViewController,UIImagePickerControllerDelegate,UIN
         
         
         
-        
-        
+       // 次のタグ選択画面へ移動
         
         performSegue(withIdentifier: "goTag", sender: nil)
         
     }
     
-    
+    // performSegueの関数が呼ばれる直前に呼ばれる関数　ここでタグのテキストと画像を受け渡す
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
+   
         let nextVC:tagViewController = segue.destination as! tagViewController
         
         nextVC.image2 = self.image
+        nextVC.tagText1 = self.tag1
+        nextVC.tagText2 = self.tag2
+        nextVC.tagText3 = self.tag3
         
         
     }
     
-    
-    
-    
-    
-    
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
